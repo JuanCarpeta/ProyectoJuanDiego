@@ -1,0 +1,35 @@
+/* Paleta Beauty Care: verde salvia + rosa suave, sobre Bootstrap 5 */
+:root {
+  --bc-sage: #FFFFFF;
+  --bc-sage-dark: #5FE8E5;
+  --bc-rose: #9BB5C7;
+  --bc-cream: #FFFFFF;
+  --bs-body-bg: var(--bc-cream);
+  --bs-link-color: var(--bc-sage-dark);
+  --bs-link-hover-color: #3b5640;
+}
+
+body { background: var(--bc-cream); }
+
+.navbar-bc { background: var(--bc-sage-dark); }
+.navbar-bc .navbar-brand { color: #fff; font-weight: 600; letter-spacing: .3px; }
+
+.btn-bc {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--bc-sage);
+  --bs-btn-border-color: var(--bc-sage);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--bc-sage-dark);
+  --bs-btn-hover-border-color: var(--bc-sage-dark);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--bc-sage-dark);
+  --bs-btn-active-border-color: var(--bc-sage-dark);
+}
+
+.card-bc { border: 0; box-shadow: 0 2px 10px rgba(79, 113, 86, .12); border-radius: 14px; }
+.table thead th { background: var(--bc-rose); color: #4a3430; border: 0; }
+.badge-categoria { background: var(--bc-rose); color: #4a3430; font-weight: 500; }
+.form-control:focus, .form-select:focus {
+  border-color: var(--bc-sage);
+  box-shadow: 0 0 0 .2rem rgba(107, 143, 113, .25);
+}
