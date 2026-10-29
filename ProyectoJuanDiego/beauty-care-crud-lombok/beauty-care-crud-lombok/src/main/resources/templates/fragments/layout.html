@@ -14,7 +14,10 @@
 
 <nav th:fragment="navbar" class="navbar navbar-expand navbar-bc navbar-dark mb-4">
     <div class="container">
-        <a class="navbar-brand" th:href="@{/}">Inter-Unab</a>
+        <a class="navbar-brand d-flex align-items-center gap-2" th:href="@{/}">
+            <img th:src="@{/img/unab.png}" alt="Universidad Autónoma de Bucaramanga" class="navbar-logo">
+            <span>Inter-Unab</span>
+        </a>
         <div class="navbar-nav flex-row gap-3 ms-3">
             <a class="nav-link text-white" th:href="@{/items}">Items</a>
             <a class="nav-link text-white" th:href="@{/intercambios}">Intercambios</a>

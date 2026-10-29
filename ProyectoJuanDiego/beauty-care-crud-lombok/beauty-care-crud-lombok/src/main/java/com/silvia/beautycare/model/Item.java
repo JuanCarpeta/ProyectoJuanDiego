@@ -31,6 +31,7 @@ public class Item {
     @Size(max = 80, message = "Máximo 80 caracteres")
     private String nombre;
 
+    @NotBlank(message = "La descripción es obligatoria")
     @Size(max = 255, message = "Máximo 255 caracteres")
     private String descripcion;
 

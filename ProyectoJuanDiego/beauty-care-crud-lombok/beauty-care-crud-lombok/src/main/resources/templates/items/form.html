@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="descripcion" class="form-label">Descripción <span class="text-muted">(opcional)</span></label>
+                    <label for="descripcion" class="form-label">Descripción</label>
                     <textarea id="descripcion" class="form-control" rows="3" th:field="*{descripcion}"
                               th:errorclass="is-invalid" maxlength="255"></textarea>
                     <div class="invalid-feedback" th:errors="*{descripcion}">Error</div>

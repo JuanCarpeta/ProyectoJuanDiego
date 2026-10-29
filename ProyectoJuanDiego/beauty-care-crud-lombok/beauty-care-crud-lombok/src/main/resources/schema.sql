@@ -42,3 +42,13 @@ CREATE TABLE IF NOT EXISTS intercambio (
     FOREIGN KEY (item_solicitado_id) REFERENCES item(id),
     CHECK (item_ofrecido_id <> item_solicitado_id)
 );
+
+-- Mensajes del chat de cada propuesta de intercambio
+CREATE TABLE IF NOT EXISTS intercambio_mensaje (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    intercambio_id INTEGER NOT NULL,
+    autor TEXT NOT NULL,
+    texto TEXT NOT NULL,
+    fecha TIMESTAMP NOT NULL,
+    FOREIGN KEY (intercambio_id) REFERENCES intercambio(id) ON DELETE CASCADE
+);

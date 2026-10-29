@@ -3,9 +3,11 @@ package com.silvia.beautycare.controller;
 import com.silvia.beautycare.model.EstadoIntercambio;
 import com.silvia.beautycare.model.Intercambio;
 import com.silvia.beautycare.model.Item;
+import com.silvia.beautycare.model.Mensaje;
 import com.silvia.beautycare.model.UsuarioSesion;
 import com.silvia.beautycare.repository.IntercambioRepository;
 import com.silvia.beautycare.repository.ItemRepository;
+import com.silvia.beautycare.repository.MensajeRepository;
 import com.silvia.beautycare.util.SesionUsuario;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -40,12 +44,63 @@ public class IntercambioController {
 
     private final IntercambioRepository repo;
     private final ItemRepository itemRepo;
+    private final MensajeRepository mensajeRepo;
 
-    // READ: listado de propuestas
+    // READ: listado de propuestas (con sus mensajes de chat)
     @GetMapping("/intercambios")
     public String listar(Model model) {
-        model.addAttribute("intercambios", repo.listar());
+        List<Intercambio> lista = repo.listar();
+        Map<Long, List<Mensaje>> mensajes = new HashMap<>();
+        for (Intercambio x : lista) {
+            mensajes.put(x.getId(), mensajeRepo.listarPorIntercambio(x.getId()));
+        }
+        model.addAttribute("intercambios", lista);
+        model.addAttribute("mensajes", mensajes);
         return "intercambios/lista";
+    }
+
+    // Chat: enviar un mensaje a una propuesta (solo las dos partes)
+    @PostMapping("/intercambios/{id}/mensajes")
+    public String enviarMensaje(@PathVariable long id,
+                                @RequestParam(required = false) String texto,
+                                RedirectAttributes flash,
+                                HttpSession sesion) {
+
+        Optional<Intercambio> opt = repo.buscarPorId(id);
+        if (opt.isEmpty()) {
+            flash.addFlashAttribute("error", "La propuesta ya no existe.");
+            return "redirect:/intercambios";
+        }
+        if (!esParte(opt.get(), sesion)) {
+            flash.addFlashAttribute("error", "Solo las partes del intercambio pueden escribir en el chat.");
+            return "redirect:/intercambios";
+        }
+
+        EstadoIntercambio estado = opt.get().getEstado();
+        if (estado == EstadoIntercambio.RECHAZADO
+                || estado == EstadoIntercambio.CANCELADO
+                || estado == EstadoIntercambio.COMPLETADO) {
+            flash.addFlashAttribute("error", "El intercambio está cerrado: el chat es de solo lectura.");
+            return "redirect:/intercambios?chat=" + id;
+        }
+
+        String limpio = texto == null ? "" : texto.trim();
+        if (limpio.isEmpty()) {
+            flash.addFlashAttribute("error", "El mensaje no puede estar vacío.");
+            return "redirect:/intercambios?chat=" + id;
+        }
+        if (limpio.length() > 500) {
+            limpio = limpio.substring(0, 500);
+        }
+
+        Mensaje m = Mensaje.builder()
+                .intercambioId(id)
+                .autor(correoActual(sesion).orElse("desconocido"))
+                .texto(limpio)
+                .build();
+        mensajeRepo.crear(m);
+
+        return "redirect:/intercambios?chat=" + id;
     }
 
     // Formulario: elegir cual de MIS items ofrezco por el item indicado

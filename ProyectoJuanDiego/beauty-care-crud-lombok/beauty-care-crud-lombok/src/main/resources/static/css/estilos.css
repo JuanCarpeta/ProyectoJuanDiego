@@ -16,6 +16,15 @@ body { background: var(--iu-light); padding-top: 1rem; }
 .navbar-bc { background: var(--iu-primary); }
 .navbar-bc .navbar-brand { color: var(--iu-white); font-weight: 600; letter-spacing: .3px; }
 
+/* Logo UNAB en el navbar: fondo blanco para que el naranja resalte sobre el azul */
+.navbar-logo {
+  height: 38px;
+  width: auto;
+  background: #fff;
+  padding: 3px 6px;
+  border-radius: 6px;
+}
+
 .btn-bc {
   --bs-btn-color: var(--iu-white);
   --bs-btn-bg: var(--iu-primary);
@@ -77,3 +86,18 @@ body { background: var(--iu-light); padding-top: 1rem; }
   border-top-left-radius: 14px;
   border-top-right-radius: 14px;
 }
+
+/* Mini chat de los intercambios */
+.chat-body { background: #f8f9fb; max-height: 55vh; }
+.chat-msg { max-width: 85%; margin-bottom: .85rem; }
+.chat-mio { margin-left: auto; text-align: right; }
+.chat-autor { font-size: .72rem; color: #6c757d; margin-bottom: 2px; }
+.chat-burbuja {
+  background: #e9edf2;
+  border-radius: 12px;
+  padding: .5rem .75rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.chat-mio .chat-burbuja { background: var(--iu-primary); color: var(--iu-white); }
+.chat-fecha { font-size: .68rem; color: #adb5bd; margin-top: 2px; }
